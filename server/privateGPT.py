@@ -149,6 +149,7 @@ def get_answer():
         source_data =[]
         for document in docs:
              source_data.append({"name":document.metadata["source"]})
+             source_data.append({"content":document.page_content})
 
         return jsonify(query=query,answer=answer,source=source_data)
 
@@ -196,10 +197,10 @@ def download_and_save():
     return jsonify(response="Download completed")
 
 def load_model():
-    filename = 'ggml-gpt4all-j-v1.3-groovy.bin'  # Specify the name for the downloaded file
-    models_folder = 'models'  # Specify the name of the folder inside the Flask app root
-    file_path = f'{models_folder}/{filename}'
-    if os.path.exists(file_path):
+    # filename = 'ggml-gpt4all-j-v1.3-groovy.bin'  # Specify the name for the downloaded file
+    # models_folder = 'models'  # Specify the name of the folder inside the Flask app root
+    # file_path = f'{models_folder}/{filename}'
+    if os.path.exists(model_path):
         global llm
         callbacks = [StreamingStdOutCallbackHandler()]
         llm = GPT4All(model=model_path, n_ctx=model_n_ctx, backend='gptj', callbacks=callbacks, verbose=False)
